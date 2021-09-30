@@ -1,8 +1,9 @@
+import time
 import states
 
 class Agent:
 
-    def __init__(self, _robot):
+    def __init__(self):
         self.alive = True
         self.myState = None
         self.myPos = [0][0]
@@ -11,6 +12,7 @@ class Agent:
         self.environment = None
         self.state = states.State(self)
         self.target = None
+        self.consommation = 0
 
 
     def ObserveEnvironment(self):
@@ -41,6 +43,20 @@ class Agent:
 
     def live(self):
         while self.alive:
-            self.ObserveEnvironmentWithAllMySensors(self)
-            self.UpdateMyState(self)
-            self.state.execute(self)
+            self.ObserveEnvironment()
+            self.UpdateMyState()
+            self.state.execute()
+            self.consommation += 1
+            time.sleep(1)
+
+    def VacuumRoom(self):
+        self.environment[self.myPos].jewel = False
+        self.environment[self.myPos].dust = False
+
+    def PickUp(self):
+        self.environment[self.myPos].jewel = False
+
+    def move(self, direction):
+        self.environment[self.myPos].robot = False
+        newPos = self.myPos + direction
+        self.environment[newPos].robot = True
