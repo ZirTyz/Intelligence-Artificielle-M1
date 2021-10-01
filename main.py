@@ -3,9 +3,15 @@ import view
 import House
 from Thread import myThread
 
+# speed max = 1/60 (à cause du taux de rafraichissement)
+# default = 1
+speed = 1
 
-speed = 0.5
-house = House.House(speed)
+# size max = 20 (à cause de l'offset dans l'affichage non dynamique)
+# default = 5
+size = 7
+
+house = House.House(speed, size)
 agent = agent.Agent(house, speed)
 view = view.View(house)
 

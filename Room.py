@@ -3,10 +3,10 @@ from states import State
 
 class Room:
     
-    def __init__(self, numH, numV, _hasRobot = False):
+    def __init__(self, numH, numV):
         self.m_dust = False
         self.m_jewel = False
-        self.m_robot = _hasRobot
+        self.m_robot = False
         self.m_numH = numH
         self.m_numV = numV
 
