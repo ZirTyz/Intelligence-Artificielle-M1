@@ -17,13 +17,13 @@ class State:
                 self.robot.target = self.robot.dustPos[0]
 
             if self.robot.target[0] < self.robot.myPos[0]:
-                self.robot.moove([-1][0])
+                self.robot.move([-1][0])
             elif self.robot.target[0] > self.robot.myPos[0]:
-                self.robot.moove([1][0])
+                self.robot.move([1][0])
             elif self.robot.target[0] > self.robot.myPos[0]:
-                self.robot.moove([0][-1])
+                self.robot.move([0][-1])
             elif self.robot.target[0] > self.robot.myPos[0]:
-                self.robot.moove([0][1])
+                self.robot.move([0][1])
 
         elif self.currentState == "idle":
             self.robot.consommation -= 1

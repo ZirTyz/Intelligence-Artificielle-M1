@@ -11,11 +11,15 @@ class House:
 
     def __init__(self):
         self.createHouse(5,5)
+        self.alive = True
 
     def createHouse(self, nbRoomH, nbRoomV):
         for i in range (nbRoomH):
             for j in range (nbRoomV):
-                self.m_rooms[i][j] = Room()
+                if i == 2 and j == 2:
+                    self.m_rooms[i][j] = Room(True)
+                else:
+                    self.m_rooms[i][j] = Room()
     
     def updateHouse(self):
         proba = random.random() * 100
@@ -25,8 +29,6 @@ class House:
             self.addDust(nbroomH,nbroomV)
         elif proba < 30:
             self.addJewel(nbroomH,nbroomV)
-
-        print(proba)
 
 
 
@@ -51,5 +53,7 @@ class House:
         self.m_rooms[nRoomH][nRoomV].setRobot(False)
 
     def live(self):
-        self.updateHouse()
-        time.sleep(3)
+        while self.alive:
+            print("house is living")
+            self.updateHouse()
+            time.sleep(1)

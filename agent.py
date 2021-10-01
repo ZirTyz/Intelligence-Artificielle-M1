@@ -19,14 +19,16 @@ class Agent:
     def ObserveEnvironment(self):
         self.dustPos = []
         self.jewelPos = []
-        for lin in self.environment.m_rooms:
-            for col in lin:
-                if col.hasDust():
-                    self.dustPos.append([lin, col])
-                if col.hasJewel():
-                    self.jewelPos.append([lin, col])
-                if col.hasRobot():
-                    self.myPos = [lin, col]
+        self.environment.m_rooms
+        for x in range(0, len(self.environment.m_rooms)):
+            for y in range(0, len(self.environment.m_rooms[x])):
+                room = self.environment.m_rooms[x][y]
+                if room.hasDust():
+                    self.dustPos.append([x, y])
+                if room.hasJewel():
+                    self.jewelPos.append([x, y])
+                if room.hasRobot():
+                    self.myPos = [x, y]
                 pass
         pass
 
@@ -43,6 +45,7 @@ class Agent:
 
     def live(self):
         while self.alive:
+            print("agent is living")
             self.ObserveEnvironment()
             self.UpdateMyState()
             self.state.execute()

@@ -1,11 +1,9 @@
 class Room:
-    m_dust = False
-    m_jewel = False
-    m_robot = False
     
-    def __init__(self):
+    def __init__(self, _hasRobot = False):
         self.m_dust = False
         self.m_jewel = False
+        self.m_robot = _hasRobot
 
     #Accessors
     def hasDust(self):
