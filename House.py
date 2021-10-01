@@ -17,9 +17,9 @@ class House:
         for i in range (nbRoomH):
             for j in range (nbRoomV):
                 if i == 2 and j == 2:
-                    self.m_rooms[i][j] = Room(True)
+                    self.m_rooms[i][j] = Room(i,j,True)
                 else:
-                    self.m_rooms[i][j] = Room()
+                    self.m_rooms[i][j] = Room(i,j)
     
     def updateHouse(self):
         proba = random.random() * 100
