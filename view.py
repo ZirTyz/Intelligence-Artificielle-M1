@@ -5,19 +5,20 @@ class View:
 
     def __init__(self, _house):
         pygame.init()
-        self.gameDisplay = pygame.display.set_mode((560, 560))
+        self.gameDisplay = pygame.display.set_mode((700, 700))
         pygame.display.set_caption('Intelligence Artificielle M1')
         self.clock = pygame.time.Clock()
         self.crashed = False
         self.environment = _house
         self.offset = 10
-        self.squareSize = 100
+        self.squareSize = ((700-self.offset)/self.environment.size) - self.offset
 
     def refresh(self):
         while not self.crashed:
             self.screenUpdate()
             pygame.display.update()
             self.clock.tick(60)
+        pygame.quit()
 
     def screenUpdate(self):
         for event in pygame.event.get():

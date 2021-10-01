@@ -3,29 +3,26 @@ import random
 import time
 
 class House:
-    m_rooms =[  [0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0]   ]
 
-    def __init__(self, _speed):
-        self.createHouse(5,5)
+
+    def __init__(self, _speed, _size):
+        self.size = _size
+        self.m_rooms = [list(range(0, self.size)) for i in range(self.size)]
+        self.createHouse(self.size)
         self.alive = True
         self.speed = _speed
 
-    def createHouse(self, nbRoomH, nbRoomV):
-        for i in range (nbRoomH):
-            for j in range (nbRoomV):
-                if i == 2 and j == 2:
-                    self.m_rooms[i][j] = Room(i,j,True)
-                else:
-                    self.m_rooms[i][j] = Room(i,j)
+    def createHouse(self, size):
+        for i in range (size):
+            for j in range (size):
+                self.m_rooms[i][j] = Room(i,j)
+        self.m_rooms[0][0].setRobot(True)
+
     
     def updateHouse(self):
         proba = random.random() * 100
-        nbroomH = random.randint(0, 4)
-        nbroomV = random.randint(0, 4)
+        nbroomH = random.randint(0, self.size-1)
+        nbroomV = random.randint(0, self.size-1)
         if proba < 15:
             self.addDust(nbroomH,nbroomV)
         elif proba < 30:
