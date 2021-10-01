@@ -8,8 +8,10 @@ class State:
         if self.currentState == "vacuum":
             self.robot.VacuumRoom()
             self.robot.target = None
+            
         elif self.currentState == "pick up":
             self.robot.PickUp()
+
         elif self.currentState == "move":
             if not self.robot.target:
                 self.robot.target = self.robot.dustPos[0]

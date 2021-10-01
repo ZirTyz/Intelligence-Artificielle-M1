@@ -8,7 +8,7 @@ class House:
                 [0,0,0,0,0],
                 [0,0,0,0,0],
                 [0,0,0,0,0]   ]
-    print(m_rooms)
+
     def __init__(self):
         self.createHouse(5,5)
 
@@ -31,24 +31,25 @@ class House:
 
 
     #Mutators
+
     def addDust(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setDust(True)
+
     def addJewel(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setJewel(True)
+
     def addRobot(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setRobot(True)
 
     def removeDust(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setDust(False)
+
     def removeJewel(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setJewel(False)
+
     def removeRobot(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setRobot(False)
 
-# Game loop
-house = House()
-
-while (1):
-    house.updateHouse()
-    time.sleep(3)
-  
+    def live(self):
+        self.updateHouse()
+        time.sleep(3)
