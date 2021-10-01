@@ -9,9 +9,10 @@ class House:
                 [0,0,0,0,0],
                 [0,0,0,0,0]   ]
 
-    def __init__(self):
+    def __init__(self, _speed):
         self.createHouse(5,5)
         self.alive = True
+        self.speed = _speed
 
     def createHouse(self, nbRoomH, nbRoomV):
         for i in range (nbRoomH):
@@ -55,4 +56,4 @@ class House:
     def live(self):
         while self.alive:
             self.updateHouse()
-            time.sleep(1)
+            time.sleep(self.speed)
