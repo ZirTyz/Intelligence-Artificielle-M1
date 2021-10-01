@@ -4,7 +4,7 @@ import House
 
 class Agent:
 
-    def __init__(self, _house):
+    def __init__(self, _house, _speed):
         self.alive = True
         self.myState = None
         self.myPos = [0][0]
@@ -14,6 +14,7 @@ class Agent:
         self.state = states.State(self)
         self.target = None
         self.consommation = 0
+        self.speed = _speed
 
         #astar part
         self.probVacuum = 30
@@ -55,7 +56,7 @@ class Agent:
             self.UpdateMyState()
             self.state.execute()
             self.consommation += 1
-            time.sleep(1)
+            time.sleep(self.speed)
 
     def VacuumRoom(self):
         if self.environment.m_rooms[self.myPos[0]][self.myPos[1]].hasJewel():
