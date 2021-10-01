@@ -54,6 +54,5 @@ class House:
 
     def live(self):
         while self.alive:
-            print("house is living")
             self.updateHouse()
             time.sleep(1)

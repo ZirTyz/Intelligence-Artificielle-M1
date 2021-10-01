@@ -35,14 +35,14 @@ class View:
                 room = pygame.Rect(posX, posY, self.squareSize, self.squareSize)
                 pygame.draw.rect(self.gameDisplay, (200, 200, 200), room)
                 if col.hasDust():
-                    dust = pygame.Rect(posX + 2*self.squareSize/6, posY + 2*self.offset/6, self.squareSize/6, self.squareSize/6)
+                    dust = pygame.Rect(posX + (self.squareSize/5), posY + (self.squareSize/5), self.squareSize/6, self.squareSize/6)
                     pygame.draw.rect(self.gameDisplay, (0, 0, 0), dust)
                 if col.hasJewel():
-                    jewel = pygame.Rect(posX + 5*self.squareSize / 6, posY + 2*self.offset / 6, self.squareSize / 6,
+                    jewel = pygame.Rect(posX + 3*(self.squareSize / 5), posY + (self.squareSize / 5), self.squareSize / 6,
                                        self.squareSize / 6)
                     pygame.draw.rect(self.gameDisplay, (255, 255, 0), jewel)
                 if col.hasRobot():
-                    robot = pygame.Rect(posX + 2*self.squareSize / 6, posY + 5*self.offset / 6, self.squareSize / 6,
+                    robot = pygame.Rect(posX + (self.squareSize / 5), posY + 3*(self.squareSize / 5), self.squareSize / 6,
                                        self.squareSize / 6)
                     pygame.draw.rect(self.gameDisplay, (255, 255, 255), robot)
 

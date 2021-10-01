@@ -45,7 +45,6 @@ class Agent:
 
     def live(self):
         while self.alive:
-            print("agent is living")
             self.ObserveEnvironment()
             self.UpdateMyState()
             self.state.execute()
@@ -53,15 +52,16 @@ class Agent:
             time.sleep(1)
 
     def VacuumRoom(self):
-        if self.environment[self.myPos].hasJewel():
+        if self.environment.m_rooms[self.myPos[0]][self.myPos[1]].hasJewel():
             self.environment.removeJewel(self.myPos[0],self.myPos[1])
             self.consommation += 1
-        self.environment[self.myPos].removeDust(self.myPos[0],self.myPos[1])
+        self.environment.removeDust(self.myPos[0],self.myPos[1])
 
     def PickUp(self):
-        self.environment[self.myPos].removeJewel(self.myPos[0],self.myPos[1])
+        self.environment.removeJewel(self.myPos[0],self.myPos[1])
 
     def move(self, direction):
-        self.environment[self.myPos].removeRobot(self.myPos[0],self.myPos[1])
-        newPos = self.myPos + direction
-        self.environment[newPos].addRobot(self.myPos[0],self.myPos[1])
+        self.environment.removeRobot(self.myPos[0],self.myPos[1])
+        x = self.myPos[0] + direction[0]
+        y = self.myPos[1] + direction[1]
+        self.environment.addRobot(x, y)
