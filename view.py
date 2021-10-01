@@ -18,6 +18,7 @@ class View:
             self.screenUpdate()
             pygame.display.update()
             self.clock.tick(60)
+        pygame.quit()
 
     def screenUpdate(self):
         for event in pygame.event.get():
