@@ -5,7 +5,7 @@ from Thread import myThread
 
 # speed max = 1/60 (à cause du taux de rafraichissement)
 # default = 1
-speed = 1
+speed = 1/2
 
 # size max = 20 (à cause de l'offset dans l'affichage non dynamique)
 # default = 5

@@ -81,8 +81,6 @@ class State:
         if not self.robot.target:
             self.robot.target = self.robot.dustPos[0]
 
-        print(self.robot.target, self.robot.myPos)
-
         if self.robot.target[0] < self.robot.myPos[0]:
             self.robot.move([-1, 0])
         elif self.robot.target[0] > self.robot.myPos[0]:

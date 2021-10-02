@@ -61,7 +61,7 @@ class Agent:
 
     def live(self):
         while self.alive:
-            # print(self.state.currentState)
+            print(self.state.currentState)
             self.ObserveEnvironment()
             self.UpdateMyState()
             self.state.execute()
