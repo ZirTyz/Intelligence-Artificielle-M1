@@ -1,9 +1,14 @@
+
+
 class State:
+
+
 
     def __init__(self, _robot):
         self.currentState = "idle"
         self.robot = _robot
         self.isCalledOnce = False
+
 
     def sCurrentState(self, state):
         if state == None:
@@ -32,17 +37,6 @@ class State:
         elif self.currentState == "move":
             self.move_Update()
 
-            # if not self.robot.target:
-            #     self.robot.target = self.robot.dustPos[0]
-
-            # if self.robot.target[0] < self.robot.myPos[0]:
-            #     self.robot.moove([-1][0])
-            # elif self.robot.target[0] > self.robot.myPos[0]:
-            #     self.robot.moove([1][0])
-            # elif self.robot.target[0] < self.robot.myPos[0]:
-            #     self.robot.moove([0][-1])
-            # elif self.robot.target[0] > self.robot.myPos[0]:
-            #     self.robot.moove([0][1])
 
         elif self.currentState == "idle":
             self.idle_update()
@@ -52,6 +46,7 @@ class State:
 
     def vacuum_Start(self):
         self.isCalledOnce = True
+
 
     def vacuum_Update(self):
         if (self.isCalledOnce == False):
@@ -68,6 +63,7 @@ class State:
     def pickup_Start(self):
         self.isCalledOnce = True
 
+
     def pickup_Update(self):
         self.robot.PickUp()
 
@@ -77,6 +73,7 @@ class State:
 
     def move_Start(self):
         self.isCalledOnce = True
+
 
     def move_Update(self):
         if (self.isCalledOnce == False):
@@ -101,6 +98,7 @@ class State:
 
     def idle_start(self):
         self.isCalledOnce = True
+        
 
     def idle_update(self):
         if self.isCalledOnce == False:

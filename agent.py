@@ -17,12 +17,15 @@ class Agent:
         self.target = None
         self.consommation = 0
         self.speed = _speed
+        
 
         #astar part
         self.probVacuum = 30
         self.probPickUp = 30
         self.probMove   = 40
         self.target = [0, 0]
+        self.scoreDust = 8
+        self.scoreJewel = 6
 
 
     def ObserveEnvironment(self):
@@ -58,12 +61,15 @@ class Agent:
 
     def live(self):
         while self.alive:
-            print(self.state.currentState)
+            # print(self.state.currentState)
             self.ObserveEnvironment()
             self.UpdateMyState()
             self.state.execute()
             self.consommation += 1
             time.sleep(self.speed)
+            # if self.consommation == 1:      # Zone Training but not working at time
+            #     self.alive = False
+            #     self.consommation = 0
 
     def VacuumRoom(self):
         if self.environment.m_rooms[self.myPos[0]][self.myPos[1]].hasJewel():
@@ -85,16 +91,20 @@ class Agent:
 
     def getScore(self, room):
         if room.getStateRoom() == 1: #Dust
-            return 8
+            return self.scoreDust
         
         if room.getStateRoom() == 2: #Jewel
-            return 6
+            return self.scoreJewel
         
         if room.getStateRoom() == 3: #Dust and Jewel
-            return 14
+            return self.scoreDust + self.scoreJewel
 
         if room.getStateRoom() == 4: #Nothing
             return 0
+
+    def setScore(self):
+        f = open("Probabilites.txt")
+        f.close()
     
     def getDistance(self, numH, numV ):
         return abs(self.myPos[0] - numH) + abs(self.myPos[1] - numV)
@@ -180,7 +190,6 @@ class Agent:
             else:
                 self.state.sCurrentState("idle")
 
-    def training(self):
-        return 1
+
         
 

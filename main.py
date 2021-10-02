@@ -9,7 +9,7 @@ speed = 1
 
 # size max = 20 (à cause de l'offset dans l'affichage non dynamique)
 # default = 5
-size = 7
+size = 5
 
 house = House.House(speed, size)
 agent = agent.Agent(house, speed)

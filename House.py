@@ -50,6 +50,15 @@ class House:
     def removeRobot(self, nRoomH, nRoomV):
         self.m_rooms[nRoomH][nRoomV].setRobot(False)
 
+    def clearHouse(self):
+        for i in range (5):
+            for j in range (5):
+                self.m_rooms[i][j].setDust(False)
+                self.m_rooms[i][j].setJewel(False)
+                self.m_rooms[i][j].setRobot(False)
+        self.m_rooms[2][2].setRobot(True)
+
+
     def live(self):
         while self.alive:
             self.updateHouse()
