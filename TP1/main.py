@@ -1,7 +1,5 @@
-import agent
-import view
-import House
-from Thread import myThread
+from TP1 import House, view, agent
+from TP1.Thread import myThread
 
 # speed max = 1/60 (à cause du taux de rafraichissement)
 # default = 1
@@ -27,4 +25,8 @@ agent.alive = False
 
 thread1.join()
 thread2.join()
+
+
+
+
 

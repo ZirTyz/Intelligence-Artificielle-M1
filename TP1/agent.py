@@ -1,7 +1,7 @@
 import random
 import time
-import states
-import House
+from TP1 import states
+
 
 class Agent:
 
