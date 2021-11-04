@@ -1,5 +1,7 @@
-print("hello world")
+import solver
 
+print("hello world")
+solver.solveCSP(1)
 
 
 
