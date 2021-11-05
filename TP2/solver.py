@@ -84,7 +84,17 @@ def selectUnasingnedBox(csp):
             return box
 
 def selectUnasingnedBoxMRV(csp):
-    pass
+    minDomain = csp.possibleValues[0][0].__len__()
+    nextBox = csp.variable[0][0]
+    for box in csp.variables:
+        if not (csp.assignments[box[0]][box[1]]):
+            if (minDomain > csp.possibleValues[box[0]][box[1]].__len__()):
+                nextBox = box
+                minDomain = csp.possibleValues[box[0]][box[1]].__len__()
+    return nextBox
+
+        
+
 #todo fill
 
 def selectUnasingnedBoxEuristic(csp):
