@@ -1,3 +1,5 @@
+import copy
+
 def solveCSP(sudoku):
     graph = Graph()
     variables = []
@@ -39,14 +41,6 @@ def solveCSP(sudoku):
             #for linEle in range(1+3*linSquare, 3*linSquare + 3 + 1):
                 #for colEle in range(1 + 3 * colSquare, 3 * colSquare + 3 + 1):
 
-    print("variables : ")
-    print(variables)
-    print("domain : ")
-    print(domain)
-    print("constraints : ")
-    print(constraints)
-    #print(len(constraints))
-
     csp = CSP(variables, domain, constraints, sudoku, graph)
     result = RecursiveBacktrackingSearch(csp)
     if result:
@@ -68,14 +62,6 @@ class CSP:
 
         for var in self.variables:
             self.possibleValues[var[0]][var[1]] = self.domain.copy()
-
-        for lin in range(0, 9):
-            for col in range(0, 9):
-                box =self.graph.getBox(lin, col)
-                for boxbis in box.arcs:
-                    print(str(boxbis.x)+str(boxbis.y), end=';')
-                print("-", end='')
-            print(".")
 
         for lin in range(0, 9):
             for col in range(0, 9):
@@ -166,54 +152,31 @@ def RecursiveBacktrackingSearch(csp):
     if AssignementIsFull(csp):
         return csp
     box2process = selectUnasingnedBox(csp)
-    save = csp.possibleValues.copy()
+    save = copy.deepcopy(csp.possibleValues)
     for var in possibleDomainValue(box2process, csp):
         csp.assignments[box2process[0]][box2process[1]] = var
         csp.possibleValues[box2process[0]][box2process[1]] = [var]
         if AC3(csp, csp.graph.getBox(box2process[0],box2process[1]), var) and constraintsGood(csp):
-            #print(csp.possibleValues)
             result = RecursiveBacktrackingSearch(csp)
             if result:
                 return result
             else:
                 csp.assignments[box2process[0]][box2process[1]] =  False
-                csp.possibleValues = save
+                csp.possibleValues = copy.deepcopy(save)
         else:
             csp.assignments[box2process[0]][box2process[1]] =  False
-            csp.possibleValues = save
+            csp.possibleValues = copy.deepcopy(save)
     return False
-
-def AC32(csp, box):
-    queue = []
-    for boxbis in box.arcs:
-        queue.append((box, boxbis))
-    while queue.size() != 0:
-        arc = queue.pop()
-        if removeInconstistentValue2(csp, arc[0], arc[1]):
-            for boxter in arc[1].arcs:
-                queue.append((arc[1], boxter))
-
-def removeInconstistentValue2(csp, boxa, boxb):
-    removed = False
-    for x in csp.possibleValues[boxa.x][boxa.y]:
-        satisfy = True
-        for y in csp.possibleValues[boxb.x][boxb.y]:
-            if x == y:
-                satisfy = False
-        if not satisfy:
-            csp.possibleValues[boxa.x][boxa.y].remove(x)
-            removed = True
-    return removed
 
 def AC3(csp, box, value):
     for box2process in box.arcs:
         removed = removeValue(csp, box2process, value)
         if removed:
-            if csp.possibleValues[box2process.x][box2process.y] == []:
+            if len(csp.possibleValues[box2process.x][box2process.y])<1:
                 return False
             elif len(csp.possibleValues[box2process.x][box2process.y])==1:
-                AC3(csp, box2process, csp.possibleValues[box2process.x][box2process.y][0])
-
+                if not AC3(csp, box2process, csp.possibleValues[box2process.x][box2process.y][0]):
+                    return False
     return True
 
 def removeValue(csp, arc, value):
