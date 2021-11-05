@@ -10,6 +10,8 @@ class Tile:
     def RemoveDomain(self, value):
         if (value in self.m_domain):
             self.m_domain.remove(value)
+        else: 
+            return 1 # return value for least constraining value
     def RestoreDomain(self, value):
         self.m_domain.append(value)
     def setValue(self, value):
