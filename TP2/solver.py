@@ -1,8 +1,10 @@
 def solveCSP(sudoku):
+    graph = Graph()
     variables = []
     for lin in range(0, 9):
         for col in range(0, 9):
             variables.append((lin,col))
+            graph.addBox(Box(lin, col))
     domain = []
     for var in range(1, 10):
         domain.append(var)
@@ -13,6 +15,7 @@ def solveCSP(sudoku):
         for var in range(0, 8):
             for check in range(var+1, 9):
                     constraints.append(((lin,var), ((lin),(check))))
+                    graph.getBox(lin, var).addArc(graph.getBox(lin,check))
 
 
     # not 2 time in the same col
@@ -20,6 +23,7 @@ def solveCSP(sudoku):
         for var in range(0, 8):
             for check in range(var+1, 9):
                 constraints.append(((var, col), ((check), (col))))
+                graph.getBox(var, col).addArc(graph.getBox(check, col))
 
 
     # not 2 time in the same square
@@ -28,6 +32,7 @@ def solveCSP(sudoku):
             for ele in range(0, 8 ):
                 for check in range(ele+1, 9 ):
                     constraints.append(((int(ele/3)+3*linSquare, ele%3+3*colSquare), ((int(check/3)+3*linSquare), (check%3+3*colSquare))))
+                    graph.getBox(int(ele/3)+3*linSquare, ele%3+3*colSquare).addArc(graph.getBox(int(check/3)+3*linSquare, check%3+3*colSquare))
             #for linEle in range(1+3*linSquare, 3*linSquare + 3 + 1):
                 #for colEle in range(1 + 3 * colSquare, 3 * colSquare + 3 + 1):
 
@@ -39,8 +44,7 @@ def solveCSP(sudoku):
     print(constraints)
     #print(len(constraints))
 
-    csp = CSP(variables, domain, constraints, sudoku)
-    print(csp.possibleValues)
+    csp = CSP(variables, domain, constraints, sudoku, graph)
     result = RecursiveBacktrackingSearch(csp)
     if result:
         for i in range(0, 9):
@@ -49,21 +53,40 @@ def solveCSP(sudoku):
         print("pas de solution possible")
 
 class CSP:
-    def __init__(self, _variables,_domain, _constraints, _assignments):
+    def __init__(self, _variables,_domain, _constraints, _assignments, _graph):
         self.variables = _variables
         self.domain = _domain
         self.constraints = _constraints
+
+        self.graph = _graph
+
         self.assignments = _assignments
         self.possibleValues = [ [ 0 for i in range(9) ] for j in range(9) ]
+        
         for var in self.variables:
             self.possibleValues[var[0]][var[1]] = self.domain.copy()
 
+class Graph:
+    def __init__(self):
+        self.boxes = [ [ False for i in range(9) ] for j in range(9) ]
+
+    def addBox(self,  box):
+        self.boxes[box.x][box.y] = box
+
+    def getBox(self, x, y):
+        return self.boxes[x][y]
+
 class Box:
-    def __init__(self,_x, _y, _domain, _csp):
+    def __init__(self,_x, _y):
         self.x = _x
         self.y = _y
-        self.assignment = False
         self.arcs = []
+
+    def addArc(self, box):
+        try:
+            self.arcs.index(box)
+        except:
+            self.arcs.append(box)
 
 
 
