@@ -62,7 +62,7 @@ class CSP:
 
         self.assignments = _assignments
         self.possibleValues = [ [ 0 for i in range(9) ] for j in range(9) ]
-        
+
         for var in self.variables:
             self.possibleValues[var[0]][var[1]] = self.domain.copy()
 
@@ -115,7 +115,12 @@ def selectUnasingnedBoxEuristic(csp):
 # todo fill
 
 def possibleDomainValue(box, csp):
-    return csp.domain
+    return csp.possibleValues[box[0]][box[1]]
+
+#Least constraining value
+#todo will sort possible domain value by least contraining to most
+def possibleDomainValueLCV(box, csp):
+    return csp.possibleValues[box[0]][box[1]]
 
 
 def AssignementIsFull(csp):
