@@ -40,7 +40,7 @@ def solveCSP(sudoku):
     #print(len(constraints))
 
     csp = CSP(variables, domain, constraints, sudoku)
-    print(csp.assignments)
+    print(csp.possibleValues)
     result = RecursiveBacktrackingSearch(csp)
     if result:
         for i in range(0, 9):
@@ -54,6 +54,18 @@ class CSP:
         self.domain = _domain
         self.constraints = _constraints
         self.assignments = _assignments
+        self.possibleValues = [ [ 0 for i in range(9) ] for j in range(9) ]
+        for var in self.variables:
+            self.possibleValues[var[0]][var[1]] = self.domain.copy()
+
+class Box:
+    def __init__(self,_x, _y, _domain, _csp):
+        self.x = _x
+        self.y = _y
+        self.assignment = False
+        self.arcs = []
+
+
 
 def constraintsGood(csp):
     good = True
@@ -70,6 +82,14 @@ def selectUnasingnedBox(csp):
     for box in csp.variables:
         if not (csp.assignments[box[0]][box[1]]):
             return box
+
+def selectUnasingnedBoxMRV(csp):
+    pass
+#todo fill
+
+def selectUnasingnedBoxEuristic(csp):
+    pass
+# todo fill
 
 def possibleDomainValue(box, csp):
     return csp.domain
