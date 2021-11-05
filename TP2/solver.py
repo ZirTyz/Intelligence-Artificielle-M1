@@ -52,7 +52,11 @@ def solveCSP(sudoku):
         for i in range(0, 9):
             print(result.assignments[i])
             
+<<<<<<< HEAD
     for i in range(0,9): # Pas d'assignement des valeurs d'origne du sudoku 
+=======
+    for i in range(0,9):
+>>>>>>> master
         for j in range(0,9):
             print(csp.variableTile[i][j].m_value)
     else:
