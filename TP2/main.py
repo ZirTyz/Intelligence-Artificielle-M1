@@ -1,6 +1,5 @@
 import solver
 
-print("hello world")
 sudoku = [
     [3,5,False,    False,False,False,    9,4,False],
     [False,False,8,    1,False,False,    False,5,6],
@@ -27,7 +26,7 @@ sudoku2 = [
     [8,False,False,    False,False,False,    False,7,False],
     [1,False,False,    False,6,False,    False,3,8],
 ]
-#solver.solveCSP(sudoku)
+solver.solveCSP(sudoku)
 solver.solveCSP(sudoku2)
 
 

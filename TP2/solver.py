@@ -44,6 +44,7 @@ def solveCSP(sudoku):
     csp = CSP(variables, domain, constraints, sudoku, graph)
     result = RecursiveBacktrackingSearch(csp)
     if result:
+        print("Sudoku résolu :")
         for i in range(0, 9):
             print(result.assignments[i])
     else:
@@ -69,11 +70,10 @@ class CSP:
                     self.possibleValues[lin][col] = [self.assignments[lin][col]]
                     AC3(self, self.graph.getBox(lin, col), self.assignments[lin][col])
 
+        print("Sudoku à résoudre (les False sont les cases vides à remplir) :")
         for i in range(0, 9):
             print(self.assignments[i])
 
-        for i in range(0, 9):
-            print(self.possibleValues[i])
 
 class Graph:
     def __init__(self):
