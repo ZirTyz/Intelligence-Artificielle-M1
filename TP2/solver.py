@@ -116,10 +116,6 @@ def selectUnasingnedBoxMRV(csp):
                 minDomain = csp.possibleValues[box[0]][box[1]].__len__()
     return nextBox
 
-        
-
-#todo fill
-
 def selectUnasingnedBoxEuristic(csp):
     pass
 # todo fill
@@ -130,7 +126,8 @@ def possibleDomainValue(box, csp):
 #Least constraining value
 #todo will sort possible domain value by least contraining to most
 def possibleDomainValueLCV(box, csp):
-    return csp.possibleValues[box[0]][box[1]]
+    pass
+    # todo fill
 
 
 def AssignementIsFull(csp):
