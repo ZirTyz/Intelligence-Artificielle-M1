@@ -117,28 +117,58 @@ def selectUnasingnedBox(csp):
 
 def selectUnasingnedBoxMRV(csp):
     minDomain = csp.possibleValues[0][0].__len__()
-    nextBox = csp.variable[0][0]
+    nextBox = csp.variable[0]
     for box in csp.variables:
-        if not (csp.assignments[box[0]][box[1]]):
-            if (minDomain > csp.possibleValues[box[0]][box[1]].__len__()):
+        if not (csp.assignments[box.x][box.y]):
+            if (minDomain > possibleDomainValue(box,csp).__len__()): #csp.possibleValues[box[0]][box[1]].__len__()
                 nextBox = box
-                minDomain = csp.possibleValues[box[0]][box[1]].__len__()
+                minDomain = possibleDomainValue(box,csp).__len__()
     return nextBox
 
 def selectUnasingnedBoxEuristic(csp):
-    pass
+    sommeContrainte = 0
+    boxEuristicList = []
+    for box in csp.variables:
+        if not (csp.assignements[box.x][box.y]):
+            for linkBox in box.arcs:
+                if not (csp.assignements[linkBox.x][linkBox.y]):
+                    sommeContrainte += possibleDomainValue(linkBox,csp).__len__()
+
+            boxEuristicList.append([sommeContrainte,box])
+            sommeContrainte = 0
+    boxEuristicList.sort()
+    return boxEuristicList[0][1]
+            
+
+
+    
 # todo fill
 
 def possibleDomainValue(box, csp):
-    return csp.possibleValues[box[0]][box[1]]
+    return csp.possibleValues[box.x][box.y]
 
 #Least constraining value
 #todo will sort possible domain value by least contraining to most
 def possibleDomainValueLCV(box, csp):
-    pass
-    # todo fill
+    # LCVBox = []
+    # for nextValue in possibleDomainValue(box,csp):
+    #     for nextBox in box.arcs:
+    #         if not (csp.assignements[nextBox.x][nextBox.y]):
+    #             LCVBox.append([(csp.possibleValues[nextBox.x][nextBox.y].__len__() - (nextValue in csp.possibleValues[nextBox.x][nextBox.y]),nextBox])
+    #     LCVBox.sort()
+    # return    
+    LCVsommeList = []
+    LCVsomme = 0
+    for nextValue in possibleDomainValue(box,csp):
+        for nextBox in box.arcs:
+            if not (csp.assignements[nextBox.x][nextBox.y]):
+                LCVsomme += (nextValue in csp.possibleValues[nextBox.x][nextBox.y])
+        LCVsommeList.append([LCVsomme,nextValue])
+        LCVsomme = 0
+    LCVsommeList.sort()
+    return LCVsommeList[0][1]
 
-
+ # todo fill
 def AssignementIsFull(csp):
     full = True
     for lin in range(0, 9):
