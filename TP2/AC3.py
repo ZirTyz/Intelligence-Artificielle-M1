@@ -13,10 +13,14 @@ class AC3:
         pass
 
     def propagate(self, _value, _boxs):
-        
+        boxContraint = []
         for box in _boxs:
-            box.RemoveDomain(_value)
+            if(box.RemoveDomain(_value) == 1):
+                boxContraint.append(box)
+        return boxContraint
 
-    def restore(self, _value, _boxs):
+
+    def restore(self, _value, _boxs,_boxC):
         for box in _boxs:
-            box.RestoreDomain(_value) 
+            if not (box in _boxC): 
+                box.RestoreDomain(_value) 

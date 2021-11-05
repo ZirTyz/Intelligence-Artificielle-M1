@@ -160,12 +160,12 @@ def RecursiveBacktrackingSearch(csp):
         csp.assignments[box2process[0]][box2process[1]] = var
         currentBox.setValue(var)
         if constraintsGood(csp):
-            csp.ac3.propagate(var, unasingnedBoxLinkTo(currentBox,csp))
+            boxContraint = csp.ac3.propagate(var, unasingnedBoxLinkTo(currentBox,csp))
             result = RecursiveBacktrackingSearch(csp)
             if result:
                 return result
             else:
-                csp.ac3.restore(var, unasingnedBoxLinkTo(currentBox,csp) )
+                csp.ac3.restore(var, unasingnedBoxLinkTo(currentBox,csp),boxContraint )
                 csp.assignments[box2process[0]][box2process[1]] =  False
                 csp.variableTile[box2process[0]][box2process[1]].setValue(False)
         else:
