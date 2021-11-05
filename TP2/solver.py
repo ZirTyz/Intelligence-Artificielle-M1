@@ -12,27 +12,30 @@ def solveCSP(sudoku):
 
     #not 2 time in the same line
     for lin in range(0, 9):
-        for var in range(0, 8):
-            for check in range(var+1, 9):
-                    constraints.append(((lin,var), ((lin),(check))))
-                    graph.getBox(lin, var).addArc(graph.getBox(lin,check))
+        for var in range(0, 9):
+            for check in range(0, 9):
+                    if var != check:
+                        constraints.append(((lin,var), ((lin),(check))))
+                        graph.getBox(lin, var).addArc(graph.getBox(lin,check))
 
 
     # not 2 time in the same col
     for col in range(0, 9):
-        for var in range(0, 8):
-            for check in range(var+1, 9):
-                constraints.append(((var, col), ((check), (col))))
-                graph.getBox(var, col).addArc(graph.getBox(check, col))
+        for var in range(0, 9):
+            for check in range(0, 9):
+                if var != check:
+                    constraints.append(((var, col), ((check), (col))))
+                    graph.getBox(var, col).addArc(graph.getBox(check, col))
 
 
     # not 2 time in the same square
     for linSquare in range(0, 3 ):
         for colSquare in range(0, 3):
-            for ele in range(0, 8 ):
-                for check in range(ele+1, 9 ):
-                    constraints.append(((int(ele/3)+3*linSquare, ele%3+3*colSquare), ((int(check/3)+3*linSquare), (check%3+3*colSquare))))
-                    graph.getBox(int(ele/3)+3*linSquare, ele%3+3*colSquare).addArc(graph.getBox(int(check/3)+3*linSquare, check%3+3*colSquare))
+            for ele in range(0, 9 ):
+                for check in range(0, 9 ):
+                    if ele != check:
+                        constraints.append(((int(ele/3)+3*linSquare, ele%3+3*colSquare), ((int(check/3)+3*linSquare), (check%3+3*colSquare))))
+                        graph.getBox(int(ele/3)+3*linSquare, ele%3+3*colSquare).addArc(graph.getBox(int(check/3)+3*linSquare, check%3+3*colSquare))
             #for linEle in range(1+3*linSquare, 3*linSquare + 3 + 1):
                 #for colEle in range(1 + 3 * colSquare, 3 * colSquare + 3 + 1):
 
@@ -65,6 +68,26 @@ class CSP:
 
         for var in self.variables:
             self.possibleValues[var[0]][var[1]] = self.domain.copy()
+
+        for lin in range(0, 9):
+            for col in range(0, 9):
+                box =self.graph.getBox(lin, col)
+                for boxbis in box.arcs:
+                    print(str(boxbis.x)+str(boxbis.y), end=';')
+                print("-", end='')
+            print(".")
+
+        for lin in range(0, 9):
+            for col in range(0, 9):
+                if self.assignments[lin][col]:
+                    self.possibleValues[lin][col] = [self.assignments[lin][col]]
+                    AC3(self, self.graph.getBox(lin, col), self.assignments[lin][col])
+
+        for i in range(0, 9):
+            print(self.assignments[i])
+
+        for i in range(0, 9):
+            print(self.possibleValues[i])
 
 class Graph:
     def __init__(self):
@@ -143,18 +166,62 @@ def RecursiveBacktrackingSearch(csp):
     if AssignementIsFull(csp):
         return csp
     box2process = selectUnasingnedBox(csp)
+    save = csp.possibleValues.copy()
     for var in possibleDomainValue(box2process, csp):
         csp.assignments[box2process[0]][box2process[1]] = var
-        if constraintsGood(csp):
+        csp.possibleValues[box2process[0]][box2process[1]] = [var]
+        if AC3(csp, csp.graph.getBox(box2process[0],box2process[1]), var) and constraintsGood(csp):
+            #print(csp.possibleValues)
             result = RecursiveBacktrackingSearch(csp)
             if result:
                 return result
             else:
                 csp.assignments[box2process[0]][box2process[1]] =  False
+                csp.possibleValues = save
         else:
             csp.assignments[box2process[0]][box2process[1]] =  False
+            csp.possibleValues = save
     return False
 
+def AC32(csp, box):
+    queue = []
+    for boxbis in box.arcs:
+        queue.append((box, boxbis))
+    while queue.size() != 0:
+        arc = queue.pop()
+        if removeInconstistentValue2(csp, arc[0], arc[1]):
+            for boxter in arc[1].arcs:
+                queue.append((arc[1], boxter))
+
+def removeInconstistentValue2(csp, boxa, boxb):
+    removed = False
+    for x in csp.possibleValues[boxa.x][boxa.y]:
+        satisfy = True
+        for y in csp.possibleValues[boxb.x][boxb.y]:
+            if x == y:
+                satisfy = False
+        if not satisfy:
+            csp.possibleValues[boxa.x][boxa.y].remove(x)
+            removed = True
+    return removed
+
+def AC3(csp, box, value):
+    for box2process in box.arcs:
+        removed = removeValue(csp, box2process, value)
+        if removed:
+            if csp.possibleValues[box2process.x][box2process.y] == []:
+                return False
+            elif len(csp.possibleValues[box2process.x][box2process.y])==1:
+                AC3(csp, box2process, csp.possibleValues[box2process.x][box2process.y][0])
+
+    return True
+
+def removeValue(csp, arc, value):
+    removed = False
+    if value in  csp.possibleValues[arc.x][arc.y]:
+        csp.possibleValues[arc.x][arc.y].remove(value)
+        removed = True
+    return removed
 
 
 
