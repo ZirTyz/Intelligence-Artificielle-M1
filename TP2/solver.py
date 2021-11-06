@@ -116,19 +116,22 @@ def selectUnasingnedBox(csp):
             return box
 
 def selectUnasingnedBoxMRV(csp):
-    minDomain = csp.possibleValues[0][0].__len__()
-    nextBox = csp.variable[0]
+    defaultBox = selectUnasingnedBox(csp)
+    minDomain = csp.possibleValues[defaultBox[0]][defaultBox[1]].__len__()
+    nextBox = csp.graph.getBox(defaultBox[0],defaultBox[1])
     for box in csp.variables:
+        box = csp.graph.getBox(box[0],box[1])
         if not (csp.assignments[box.x][box.y]):
             if (minDomain > possibleDomainValue(box,csp).__len__()): #csp.possibleValues[box[0]][box[1]].__len__()
                 nextBox = box
                 minDomain = possibleDomainValue(box,csp).__len__()
-    return nextBox
+    return (nextBox.x,nextBox.y)
 
 def selectUnasingnedBoxEuristic(csp):
     sommeContrainte = 0
     boxEuristicList = []
     for box in csp.variables:
+        box = csp.graph.getBox(box[0],box[1])
         if not (csp.assignements[box.x][box.y]):
             for linkBox in box.arcs:
                 if not (csp.assignements[linkBox.x][linkBox.y]):
@@ -138,17 +141,11 @@ def selectUnasingnedBoxEuristic(csp):
             sommeContrainte = 0
     boxEuristicList.sort()
     return boxEuristicList[0][1]
-            
-
-
-    
-# todo fill
 
 def possibleDomainValue(box, csp):
     return csp.possibleValues[box.x][box.y]
 
 #Least constraining value
-#todo will sort possible domain value by least contraining to most
 def possibleDomainValueLCV(box, csp):
     # LCVBox = []
     # for nextValue in possibleDomainValue(box,csp):
@@ -159,16 +156,19 @@ def possibleDomainValueLCV(box, csp):
     # return    
     LCVsommeList = []
     LCVsomme = 0
+    box = csp.graph.getBox(box[0],box[1])
     for nextValue in possibleDomainValue(box,csp):
         for nextBox in box.arcs:
-            if not (csp.assignements[nextBox.x][nextBox.y]):
+            if not (csp.assignments[nextBox.x][nextBox.y]):
                 LCVsomme += (nextValue in csp.possibleValues[nextBox.x][nextBox.y])
         LCVsommeList.append([LCVsomme,nextValue])
         LCVsomme = 0
     LCVsommeList.sort()
-    return LCVsommeList[0][1]
+    sortedBox = []
+    for box in LCVsommeList:
+        sortedBox.append(box[1])
+    return sortedBox
 
- # todo fill
 def AssignementIsFull(csp):
     full = True
     for lin in range(0, 9):
@@ -181,9 +181,9 @@ def AssignementIsFull(csp):
 def RecursiveBacktrackingSearch(csp):
     if AssignementIsFull(csp):
         return csp
-    box2process = selectUnasingnedBox(csp)
+    box2process = selectUnasingnedBoxMRV(csp)
     save = copy.deepcopy(csp.possibleValues)
-    for var in possibleDomainValue(box2process, csp):
+    for var in possibleDomainValueLCV(box2process, csp):
         csp.assignments[box2process[0]][box2process[1]] = var
         csp.possibleValues[box2process[0]][box2process[1]] = [var]
         if AC3(csp, csp.graph.getBox(box2process[0],box2process[1]), var) and constraintsGood(csp):
