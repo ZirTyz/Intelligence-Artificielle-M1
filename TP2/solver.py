@@ -145,15 +145,7 @@ def selectUnasingnedBoxEuristic(csp):
 def possibleDomainValue(box, csp):
     return csp.possibleValues[box.x][box.y]
 
-#Least constraining value
 def possibleDomainValueLCV(box, csp):
-    # LCVBox = []
-    # for nextValue in possibleDomainValue(box,csp):
-    #     for nextBox in box.arcs:
-    #         if not (csp.assignements[nextBox.x][nextBox.y]):
-    #             LCVBox.append([(csp.possibleValues[nextBox.x][nextBox.y].__len__() - (nextValue in csp.possibleValues[nextBox.x][nextBox.y]),nextBox])
-    #     LCVBox.sort()
-    # return    
     LCVsommeList = []
     LCVsomme = 0
     box = csp.graph.getBox(box[0],box[1])
